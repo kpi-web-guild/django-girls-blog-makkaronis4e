@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+"""Script for managing django."""
 import os
 import sys
 

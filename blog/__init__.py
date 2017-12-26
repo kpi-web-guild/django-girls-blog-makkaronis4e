@@ -1,0 +1,1 @@
+"""Configure files for blog."""
