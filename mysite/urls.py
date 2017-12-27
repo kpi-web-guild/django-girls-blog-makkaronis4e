@@ -1,4 +1,4 @@
-"""mysite URL Configuration."""
+"""Django based site URL Configuration."""
 from django.conf.urls import url
 from django.contrib import admin
 

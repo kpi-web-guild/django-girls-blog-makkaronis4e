@@ -1,1 +1,1 @@
-"""Configure files for blog."""
+"""Django blog app."""

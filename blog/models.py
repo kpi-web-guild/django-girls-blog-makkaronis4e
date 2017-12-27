@@ -1,10 +1,10 @@
-"""Models configuration in blog."""
+"""Description for models for interfacing the DB."""
 from django.db import models
 from django.utils import timezone
 
 
 class Post(models.Model):
-    """Configuration of the post class."""
+    """Blog post structure declaration."""
 
     author = models.ForeignKey('auth.User')
     title = models.CharField(max_length=200)
@@ -20,5 +20,5 @@ class Post(models.Model):
         self.save()
 
     def __str__(self):
-        """Return title of the post."""
+        """Render the post instance from its title."""
         return self.title

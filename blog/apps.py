@@ -1,4 +1,4 @@
-"""Configuration module for blog."""
+"""Configuration of app."""
 from django.apps import AppConfig
 
 

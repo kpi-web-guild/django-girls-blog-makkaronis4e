@@ -1,1 +1,1 @@
-"""Configure files for site."""
+"""Mysite django app."""
