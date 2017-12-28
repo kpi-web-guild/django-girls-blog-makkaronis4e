@@ -1,4 +1,4 @@
-"""Django based blog URL configuration."""
+"""Django based blog URL mapping."""
 from django.conf.urls import url
 from . import views
 
