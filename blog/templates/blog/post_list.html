@@ -1,14 +1,15 @@
 {% load staticfiles %}
+{% load i18n %}
 <html>
     <head>
-        <title>Django Girls blog</title>
+        <title>{% trans 'Django Girls blog' %}</title>
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
         <link rel="stylesheet" href="{% static 'css/blog.css' %}">
     </head>
     <body>
         <div>
-            <h1><a href="/">Django Girls Blog</a></h1>
+            <h1><a href="/">{% trans 'Django Girls Blog' %}</a></h1>
         </div>
         <div class="content container">
                 <div class="row">
@@ -16,7 +17,7 @@
                         {% for post in posts %}
                             <div class="post">
                                 <div class="date">
-                                    <p>published: {{ post.published_date }}</p>
+                                    <p>{% trans 'Published' %}: {{ post.published_date }}</p>
                                 </div>
                                 <h1><a href="">{{ post.title }}</a></h1>
                                 <p>{{ post.text|linebreaksbr }}</p>
