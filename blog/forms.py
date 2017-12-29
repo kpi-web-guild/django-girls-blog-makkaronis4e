@@ -1,13 +1,13 @@
-"""Post form."""
+"""Forms setup."""
 from django import forms
 from .models import Post
 
 
 class PostForm(forms.ModelForm):
-    """Name of post form."""
+    """Form for submitting the blog post."""
 
     class Meta:
-        """Show model which would be used for form."""
+        """Config for the post form."""
 
         model = Post
         fields = ('title', 'text',)
