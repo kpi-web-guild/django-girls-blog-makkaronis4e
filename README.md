@@ -1,8 +1,15 @@
 # django-girls-blog-makkaronis4e
 [![Build Status](https://travis-ci.org/kpi-web-guild/django-girls-blog-makkaronis4e.svg?branch=master)](https://travis-ci.org/kpi-web-guild/django-girls-blog-makkaronis4e)
 
-How to run this site from your own computer locally and deploy it on heroku:
+How to run this site from your own computer locally and deploy it on heroku?
+To run locally:
+1. Run your local server
+```(myvenv) ~/djangogirls$ python manage.py runserver```
+2. Print in browser
+```http://127.0.0.1:8000/```
 
+
+To deploy on heroku:
 1. Clone this repository to your local folder
 2. Register account on Heroku
 3. Install Heroku CLI locally
