@@ -1,35 +1,73 @@
-{% load staticfiles %}
-{% load i18n %}
+{% load staticfiles %} {% load i18n %}
 <html>
 
 <head>
-    <title>{% trans 'Django Girls blog' %}</title>
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+
+    <title>{% trans 'Blozhik' %}</title>
     <link rel="stylesheet" href="{% static 'css/blog.css' %}">
+    <link rel="stylesheet" href="{% static 'fontawesome-free-5.0.2/web-fonts-with-css/css/fontawesome.min.css' %}">
+    <meta charset="UTF-8">
 </head>
 
 <body>
-    <div class="page-header">
-        {% if user.is_authenticated %}
-        <a href="{% url 'post_new' %}" class="top-menu">
-            <span class="glyphicon glyphicon-plus"></span>
-        </a>
-        {% endif %}
-        <span class="glyphicon glyphicon-plus">
-        </span>
-        </a>
-        <h1>
-            <a href="/">{% trans 'Django Girls Blog' %}</a>
-        </h1>
-    </div>
-    <div class="content container">
-        <div class="row">
-            <div class="col-md-8">
-                {% block content %} {% endblock %}
+    <header>
+        <div class="header">
+            <div class="header-top">
+                <div class="social-btns">
+                    <a href="#" class="social-button FB"><i class="fa fa-facebook"></i></a>
+                    <a href="#" class="social-button TW"></a>
+                    <a href="#" class="social-button Git"></a>
+                </div>
+                <div class="l-block">
+                    <a href="" class="l-button language-switch">
+                            {% trans 'Ukr' %}/
+                            {% trans 'En' %}
+                    </a>
+                    <a href="" class="l-button login-link">
+                        {% trans 'Login' %}
+                    </a>
+                </div>
+                <h1 class="title-name">
+                    <a href="/">{% trans 'Blozhik' %}</a>
+                </h1>
+                <!-- <div class="new-post">
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'post_new' %}" class="top-menu">
+                            <span class="glyphicon glyphicon-plus"></span>
+                    </a>
+                    {% endif %}
+                </div> /!-->
             </div>
+            <nav>
+                <ul class="main-nav">
+                    <li class="nav-1">
+                        <a href="">{% trans 'Main' %}</a>
+                    </li>
+                    <li class="nav-2">
+                        <a href="">{% trans 'Top posts' %}</a>
+                    </li>
+                    <li class="nav-3">
+                        <a href="">{% trans 'Info' %}</a>
+                    </li>
+                    <li class="nav-4">
+                        <a href="">{% trans 'Contacts' %}</a>
+                </ul>
+            </nav>
         </div>
-    </div>
+    </header>
+    <main>
+        <div class="layout-main">
+            <section>
+                <div class="content container">
+                    <div class="row">
+                        <div class="col-md-8">
+                            {% block content %} {% endblock %}
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
 </body>
 
 </html>
