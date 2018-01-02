@@ -1,19 +1,23 @@
 """Django settings for mysite project."""
 
-import os
+import environ
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+# ініціалізується об'єкт, через який читати щось із енва зручно + дефолт для дебага
+env = environ.Env(DEBUG=(bool, False),)
+# оце шукає шлях папки на 2 рівні вище, ніж поточний файл (по-новому, замість того, що чуть нижче)
+BASE_DIR = environ.Path(__file__) - 2
+environ.Env.read_env()  # А оце читає файл із назвою .env, потім про це
+# os імпортити більше не треба, ми тільки шляхи ним склеювали
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'na*iqh-5=($8u+3pt3(lkthu6*9jm!l6!a7!o@(qw4d%&8v+ri'
+# читаємо змінну середовища з назвою SECRET_KEY, якщо нема - дефолт
+SECRET_KEY = env('SECRET_KEY', default='na*iqh-5=($8u+3pt3(lkthu6*9jm!l6!a7!o@(qw4d%&8v+ri')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = env('DEBUG')  # те ж саме для дебага, дефолт на рядку 5
 
 ALLOWED_HOSTS = ['127.0.0.1', 'lolis4e1.herokuapp.com']
 
@@ -65,12 +69,8 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'djangogirls',
-        'USER': 'mak',
-        'PASSWORD': '',
-    }
+    'default': env.db(default='sqlite:///db.sqlite3'),  # а це вже хелпер для парсингу змінної DATABASE_URL в словник,
+                                                        # який був тут перед цим. дефолтне значення - sqlite база
 }
 
 
@@ -111,12 +111,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-
-
-try:
-    from .local_settings import *  # noqa: F401 F403
-except ImportError:
-    import dj_database_url
-    db_from_env = dj_database_url.config(conn_max_age=500)
-    DATABASES['default'].update(db_from_env)
+STATIC_ROOT_DIR = env.path('STATIC_ROOT', BASE_DIR('static'))  # заміняємо на гарніший спосіб працювати зі шляхами
+STATIC_ROOT = STATIC_ROOT_DIR()
