@@ -6,29 +6,20 @@
 
 ###### To run locally:
 1. Clone this repository to your local folder
-1. Run in terminal
+2. Run in terminal
 ```
 $ pip install -r requirements/dev.txt
 ```
-1. Add `mysite/local_settings.py`, like this:
-```python
-import os
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
-
+3. Add `.env` in `mysite` folder, like this:
+```
 DEBUG = True
 ```
-1. Run your local server
+You can add any env var here.
+4. Run your local server
 ```
 (myvenv) ~/djangogirls$ python manage.py runserver
 ```
-1. [Open it in browser](http://127.0.0.1:8000/)
+5. [Open it in browser](http://127.0.0.1:8000/)
 
 
 ###### To deploy on heroku:
