@@ -10,11 +10,8 @@
 ```
 $ pip install -r requirements/dev.txt
 ```
-3. Add `.env` in `mysite` folder, like this:
-```
-DEBUG = True
-```
-You can add any env var here.
+3. Add `.env` in `mysite` folder, like in `.env.example`
+
 4. Run your local server
 ```
 (myvenv) ~/djangogirls$ python manage.py runserver
