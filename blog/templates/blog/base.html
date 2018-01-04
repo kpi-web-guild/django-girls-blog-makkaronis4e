@@ -12,15 +12,15 @@
 <body>
     <header>
         <div class="header">
-            <div class="header-top">
+            <div class="header-top learfix">
                 <div class="social-btns">
-                    <a href="#" class="social-button FB">
+                    <a href="https://www.facebook.com/dmitriu.makkaron" class="social-button FB">
                         <span class="fa fa-facebook"></span>
                     </a>
-                    <a href="#" class="social-button TW">
+                    <a href="https://twitter.com/makkaronis4e" class="social-button TW">
                         <span class="fa fa-twitter"></span>
                     </a>
-                    <a href="#" class="social-button Git">
+                    <a href="https://github.com/makkaronis4e" class="social-button Git">
                         <span class="fa fa-github"></span>
                     </a>
                 </div>
@@ -81,13 +81,50 @@
                         </h2>
                     </div>
                     <div class="body-twitter">
-                        <a class="twitter-timeline" data-chrome="noheader nofooter transparent" data-width="300" data-height="800" data-theme="light" data-link-color="#FAB81E" href="https://twitter.com/MileyCyrus?ref_src=twsrc%5Etfw">Tweets by MileyCyrus</a>
+                        <a class="twitter-timeline" data-chrome="noheader nofooter transparent" data-width="300" data-height="800" data-theme="light"
+                            data-link-color="#FAB81E" href="https://twitter.com/MileyCyrus?ref_src=twsrc%5Etfw">Tweets by MileyCyrus</a>
                         <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
                     </div>
                 </div>
             </aside>
         </div>
     </main>
+    <footer>
+        <div class="footer">
+            <div class="footer-block clearfix">
+                <div class="menu-block-footer">
+                    <h3 class="footer-content-title">Content</h3>
+                    <ul class="menu-footer">
+                        <li class="nav-1-footer">
+                            <a href="{% url 'post_list' %}">{% trans 'Main' %}</a>
+                        </li>
+                        <li class="nav-2-footer">
+                            <a href="">{% trans 'Top posts' %}</a>
+                        </li>
+                        <li class="nav-3-footer">
+                            <a href="">{% trans 'Info' %}</a>
+                        </li>
+                        <li class="nav-4-footer">
+                            <a href="">{% trans 'Contacts' %}</a>
+                    </ul>
+                </div>
+                <div class="social-btns-footer">
+                    <a href="https://www.facebook.com/dmitriu.makkaron" class="social-button FB">
+                        <span class="fa fa-facebook"></span>
+                    </a>
+                    <a href="https://twitter.com/makkaronis4e" class="social-button TW">
+                        <span class="fa fa-twitter"></span>
+                    </a>
+                    <a href="https://github.com/makkaronis4e" class="social-button Git">
+                        <span class="fa fa-github"></span>
+                    </a>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>(C)Makkaronis4e 20018</p>
+            </div>
+        </div>
+    </footer>
 </body>
 
 </html>

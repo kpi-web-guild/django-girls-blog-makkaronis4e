@@ -1,4 +1,4 @@
-body, p, a, div, h1, h2, span {
+body, p, a, div, h1, h2, h3, span, ul {
     padding: 0;
     margin: 0;
     font-family: 'Lobster', cursive;
@@ -12,9 +12,9 @@ a {
     text-decoration: none;
 }
 
+
 header {
     background-color: #333;
-
 }
 
 .header {
@@ -22,7 +22,7 @@ header {
     margin: 0 auto;
 }
 
-.header-top:after {
+.clearfix:after {
     display: table;
     content: "";
     clear:both;
@@ -135,7 +135,7 @@ header {
 
 main {
     background-color: #eff1e2;
-    min-height: 1300px;
+    height: 1800px;
 }
 
 .layout-main {
@@ -154,7 +154,7 @@ section {
     float: left;
     width: 810px;
     border: 1px solid black;
-    }
+}
 
 
 aside {
@@ -200,8 +200,6 @@ aside {
     text-align: center;
 }
 
-
-
 .date {
     color: #828282;
 }
@@ -227,4 +225,50 @@ aside {
 
 .post h1 a, .post h1 a:visited {
     color: #120961;
+}
+
+footer {
+    background-color: #333;
+}
+
+.footer {
+    width: 1140px;
+    margin: 0 auto;
+    background-color: #333;
+    display: table;
+    content: "";
+    clear: both;
+}
+
+.menu-block-footer {
+    float: left;
+    margin-top: 10px;
+}
+
+.social-btns-footer {
+    float: right;
+    font-size: 0;
+    margin-top: 30px;
+}
+.footer-content-title {
+    color: #dceb87;
+}
+
+.menu-footer {
+    list-style: none;
+    margin-top: 10px;
+    margin-left: 5px;
+}
+
+.menu-footer a {
+    color:whitesmoke;
+}
+
+.copyright {
+color: whitesmoke;
+border-top:1px solid lightslategray;
+margin:15px auto;
+max-width: 860px;
+text-align: center;
+padding-top: 5px;
 }
