@@ -4,8 +4,8 @@
 <head>
 
     <title>{% trans 'Blozhik' %}</title>
+    <script src="https://use.fontawesome.com/11ddba8a4a.js"></script>
     <link rel="stylesheet" href="{% static 'css/blog.css' %}">
-    <link rel="stylesheet" href="{% static 'fontawesome-free-5.0.2/web-fonts-with-css/css/fontawesome.min.css' %}">
     <meta charset="UTF-8">
 </head>
 
@@ -14,34 +14,32 @@
         <div class="header">
             <div class="header-top">
                 <div class="social-btns">
-                    <a href="#" class="social-button FB"><i class="fa fa-facebook"></i></a>
-                    <a href="#" class="social-button TW"></a>
-                    <a href="#" class="social-button Git"></a>
+                    <a href="#" class="social-button FB">
+                        <span class="fa fa-facebook"></span>
+                    </a>
+                    <a href="#" class="social-button TW">
+                        <span class="fa fa-twitter"></span>
+                    </a>
+                    <a href="#" class="social-button Git">
+                        <span class="fa fa-github"></span>
+                    </a>
                 </div>
                 <div class="l-block">
                     <a href="" class="l-button language-switch">
-                            {% trans 'Ukr' %}/
-                            {% trans 'En' %}
+                        <span class="fa fa-globe"></span>
                     </a>
                     <a href="" class="l-button login-link">
-                        {% trans 'Login' %}
+                        <span class="fa fa-sign-in"></span>
                     </a>
                 </div>
                 <h1 class="title-name">
                     <a href="/">{% trans 'Blozhik' %}</a>
                 </h1>
-                <!-- <div class="new-post">
-                    {% if user.is_authenticated %}
-                    <a href="{% url 'post_new' %}" class="top-menu">
-                            <span class="glyphicon glyphicon-plus"></span>
-                    </a>
-                    {% endif %}
-                </div> /!-->
             </div>
             <nav>
                 <ul class="main-nav">
                     <li class="nav-1">
-                        <a href="">{% trans 'Main' %}</a>
+                        <a href="{% url 'post_list' %}">{% trans 'Main' %}</a>
                     </li>
                     <li class="nav-2">
                         <a href="">{% trans 'Top posts' %}</a>
@@ -56,7 +54,7 @@
         </div>
     </header>
     <main>
-        <div class="layout-main">
+        <div class="layout-main clearfix">
             <section>
                 <div class="content container">
                     <div class="row">
@@ -66,6 +64,28 @@
                     </div>
                 </div>
             </section>
+            <aside>
+                {% if user.is_authenticated %}
+                <a href="{% url 'post_new' %}" class="add-new-post">
+                    <span class="fa fa-plus-circle"></span>
+                    NEW POST
+                </a>
+                {% endif %}
+                <div class="twitter">
+                    <div class="title-twitter">
+                        <h2 class="block-title">
+                            <a href="#">
+                                <span class="fa fa-twitter"></span>
+                                @Makkaronis4e
+                            </a>
+                        </h2>
+                    </div>
+                    <div class="body-twitter">
+                        <a class="twitter-timeline" data-chrome="noheader nofooter transparent" data-width="300" data-height="800" data-theme="light" data-link-color="#FAB81E" href="https://twitter.com/MileyCyrus?ref_src=twsrc%5Etfw">Tweets by MileyCyrus</a>
+                        <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                    </div>
+                </div>
+            </aside>
         </div>
     </main>
 </body>

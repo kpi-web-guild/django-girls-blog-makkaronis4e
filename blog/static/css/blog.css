@@ -1,4 +1,4 @@
-body, p, a, div, h1 {
+body, p, a, div, h1, h2, span {
     padding: 0;
     margin: 0;
     font-family: 'Lobster', cursive;
@@ -6,12 +6,10 @@ body, p, a, div, h1 {
 
 body {
     min-width:  1200px;
-
 }
 
 a {
     text-decoration: none;
-
 }
 
 header {
@@ -22,7 +20,6 @@ header {
 .header {
     width: 1140px;
     margin: 0 auto;
-    border:2px solid black;
 }
 
 .header-top:after {
@@ -47,6 +44,16 @@ header {
     font-size:100%;
 }
 
+.social-button span {
+    line-height: 35px;
+    vertical-align: middle;
+}
+
+.fa {
+    font-size: 24px;
+    color: #dceb87;
+}
+
 .l-block {
     float: right;
     margin-top:10px;
@@ -59,22 +66,26 @@ header {
     list-style: none;
     text-align: center;
     border:1px solid #faffe3;
-    width:60px;
+    width:50px;
     height:35px;
-    margin-left:10px;
-    vertical-align: middle;
-    font-size:18px;
-    line-height:35px;
-    color: #faffe3;
-
+    margin-right:5px;
+    font-size:100%;
 }
 
+.l-button span {
+    line-height: 35px;
+    vertical-align: middle;
+}
+
+.l-button:hover,
+.social-button:hover{
+    border:1px solid #dceb87;
+}
 
 .title-name  {
     text-align: center;
     font-size: 50px;
     margin:0 auto;
-
 }
 
 .title-name  a{
@@ -95,8 +106,6 @@ header {
     width: 175px;
     height: 30px;
     border-right: 2px solid #faffe3;
-
-
 }
 
 .main-nav li:last-child {
@@ -109,7 +118,7 @@ header {
     vertical-align: middle;
     font-weight: bold;
     color: #dceb87;
-    font-size: 24px;
+    font-size: 20px;
 }
 
 .main-nav a:active {
@@ -128,12 +137,68 @@ main {
     background-color: #eff1e2;
     min-height: 1300px;
 }
+
 .layout-main {
     width: 1140px;
     margin: 0 auto;
-    border:2px solid black;
+    padding-top:30px;
 }
 
+.clearfix:after {
+    display: table;
+    content: "";
+    clear: both;
+}
+
+section {
+    float: left;
+    width: 810px;
+    border: 1px solid black;
+    }
+
+
+aside {
+    float: right;
+    width: 300px;
+}
+
+.add-new-post {
+    display: block;
+    background: #dceb87;
+    border: 2px solid #333;
+    line-height: 50px;
+    color: #333;
+    border-radius: 7px;
+    text-align: center;
+    vertical-align: middle;
+    font-weight:bold;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.add-new-post span {
+    color: #333;
+}
+
+.add-new-post span:hover {
+    transform: rotate(90deg);
+    transition: 0.4s ease;
+}
+
+.twitter {
+    height: 800px;
+}
+
+.title-twitter {
+    background: #333;
+    color: #dceb87;
+    padding: 6px 0 7px 13px;
+}
+
+.title-twitter a{
+    color: #dceb87;
+    text-align: center;
+}
 
 
 
