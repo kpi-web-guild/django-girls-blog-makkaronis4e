@@ -153,8 +153,7 @@ main {
 section {
     float: left;
     width: 810px;
-    border: 1px solid black;
-}
+    }
 
 
 aside {
@@ -185,23 +184,49 @@ aside {
     transition: 0.4s ease;
 }
 
+.github-block, .twitter {
+    margin-bottom:10px;
+    background: #fdfcf5;
+}
+
 .twitter {
     height: 800px;
 }
 
-.title-twitter {
+.title-twitter, .title-git{
     background: #333;
     color: #dceb87;
     padding: 6px 0 7px 13px;
 }
 
-.title-twitter a{
+.title-twitter a,
+.title-git a{
     color: #dceb87;
     text-align: center;
 }
 
+.post {
+    margin-bottom: 30px;
+    border: 1px solid rgb(145, 144, 144);
+}
+
 .date {
-    color: #828282;
+    padding-left: 5px;
+    color: #dceb87;
+    background: #333;
+}
+
+.post-text {
+    background: #fdfcf5;
+    padding: 10px;
+}
+
+.post-title {
+    padding-bottom: 5px;
+}
+
+.post-title a{
+    color: #333;
 }
 
 .save {
@@ -210,21 +235,6 @@ aside {
 
 .post-form textarea, .post-form input {
     width: 100%;
-}
-
-.top-menu, .top-menu:hover, .top-menu:visited {
-    color: #ffffff;
-    float: right;
-    font-size: 26pt;
-    margin-right: 20px;
-}
-
-.post {
-    margin-bottom: 70px;
-}
-
-.post h1 a, .post h1 a:visited {
-    color: #120961;
 }
 
 footer {
@@ -238,6 +248,7 @@ footer {
     display: table;
     content: "";
     clear: both;
+    position: relative;
 }
 
 .menu-block-footer {
@@ -250,6 +261,7 @@ footer {
     font-size: 0;
     margin-top: 30px;
 }
+
 .footer-content-title {
     color: #dceb87;
 }

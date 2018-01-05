@@ -1,19 +1,17 @@
-{% extends 'blog/base.html' %}
-{% load i18n %}
-
-{% block content %}
+{% extends 'blog/base.html' %} {% load i18n %} {% block content %}
 <div class="post">
     {% if post.published_date %}
     <div class="date">
-        {{ post.published_date }}
+        {% if user.is_authenticated %}
+        <a class="fa fa-pencil-square-o" href="{% url 'post_edit' pk=post.pk %}">
+        </a>
+        {% endif %} {{ post.published_date }}
     </div>
-    {% endif %} {% if user.is_authenticated %}
-    <a class="fa fa-pencil" href="{% url 'post_edit' pk=post.pk %}">
-        <span class="glyphicon glyphicon-pencil"></span>
-    </a>
     {% endif %}
+    <div class="post-text">
+        <h3 class="post-title">{{ post.title }}</h3>
+        <p>{{ post.text|linebreaksbr }}</p>
+    </div>
 
-    <h1>{{ post.title }}</h1>
-    <p>{{ post.text|linebreaksbr }}</p>
 </div>
 {% endblock %}

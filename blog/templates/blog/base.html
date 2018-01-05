@@ -6,6 +6,7 @@
     <title>{% trans 'Blozhik' %}</title>
     <script src="https://use.fontawesome.com/11ddba8a4a.js"></script>
     <link rel="stylesheet" href="{% static 'css/blog.css' %}">
+    <link rel="shortcut icon" href="https://p.memecdn.com/avatars/s_880773_51f28c9a5a506.png">
     <meta charset="UTF-8">
 </head>
 
@@ -28,7 +29,7 @@
                     <a href="" class="l-button language-switch">
                         <span class="fa fa-globe"></span>
                     </a>
-                    <a href="" class="l-button login-link">
+                    <a href="{% url 'admin:index' %}" class="l-button login-link">
                         <span class="fa fa-sign-in"></span>
                     </a>
                 </div>
@@ -71,6 +72,18 @@
                     NEW POST
                 </a>
                 {% endif %}
+                <div class="github-block">
+                    <div class="title-git">
+                        <h2 class="block-title">
+                            <a href="https://github.com/makkaronis4e">
+                                <span class="fa fa-github"></span>
+                                Makkaronis4e
+                            </a>
+                        </h2>
+                    </div>
+                    <div class="github-widget" data-username="makkaronis4e"></div>
+                    <script src="https://unpkg.com/github-card@1.2.1/dist/widget.js"></script>
+                </div>
                 <div class="twitter">
                     <div class="title-twitter">
                         <h2 class="block-title">
@@ -121,7 +134,7 @@
                 </div>
             </div>
             <div class="copyright">
-                <p>(C)Makkaronis4e 20018</p>
+                <p>(C)Makkaronis4e 2018</p>
             </div>
         </div>
     </footer>
