@@ -5,11 +5,12 @@ from django.utils import timezone
 from django.shortcuts import get_object_or_404
 from .forms import PostForm
 from django.shortcuts import redirect
+from django.contrib.auth.decorators import login_required
 
 
 def post_list(request):
     """Render page with list of posts."""
-    posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
+    posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')
     return render(request, 'blog/post_list.html', {'posts': posts})
 
 
@@ -19,6 +20,7 @@ def post_detail(request, pk):
     return render(request, 'blog/post_detail.html', {'post': post})
 
 
+@login_required
 def post_new(request):
     """Render new post in blog."""
     if request.method == 'POST':
@@ -34,6 +36,7 @@ def post_new(request):
     return render(request, 'blog/post_edit.html', {'form': form})
 
 
+@login_required
 def post_edit(request, pk):
     """Render editing of new post in blog."""
     post = get_object_or_404(Post, pk=pk)

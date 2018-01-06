@@ -1,4 +1,5 @@
 """Tests for views are at this file."""
+# this module is called a test suite
 from unittest.mock import patch
 from datetime import datetime
 
@@ -13,16 +14,25 @@ from blog.models import Post
 class ViewsTest(TestCase):
     """Testing class for views."""
 
-    USERNAME = 'mak'
-    PASSWORD = 'MAKkaronis4e'
+    USERNAME = 'admin'
+    PASSWORD = 'test_pass'
+    EMAIL = 'some@test.xxx'
+    # the values here are for test purposes only
+    # it doesn't matter what you peak
+    # the database is always created before the test run (setUp stage) and
+    # destroyed afterwards (tearDown)
+    # the database is sqlite in-memory by default
 
-    def setUp(self):
+    def setUp(self):  # this method is run before __each__ test
         """Prepare data for testing."""
+        # shouldn't you have super().setUp() here?
         self.client = Client()
-        self.user = User.objects.create(username='mak', password='MAKkaronis4e', is_superuser=True, is_staff=True,
-                                        email='lolis4e@gmail.com', is_active=True)
+        self.user = User.objects.create_superuser(
+            username=self.USERNAME, password=self.PASSWORD,
+            email=self.EMAIL,
+        )
 
-    def test_index_view_rendering(self):
+    def test_index_view_rendering(self):  # this is a test case
         """Testing main page for render needed posts."""
         tz = timezone.get_current_timezone()
         post = Post.objects.create(author=self.user, title='Test', text='superText',
@@ -45,10 +55,10 @@ class ViewsTest(TestCase):
             self.assertNotContains(response, future_post)
         with patch('django.utils.timezone.now', lambda: datetime(day=1, month=4, year=3016, tzinfo=tz)):
             response = self.client.get(reverse('post_list'))
-            self.assertListEqual(list(response.context['posts']), [post, past_post, future_post])
+            self.assertListEqual(list(response.context['posts']), [future_post, post, past_post])
         response = self.client.get(reverse('post_list'))
         self.assertEqual(200, response.status_code)
-        self.assertTemplateUsed(response, 'main/index.html')
+        self.assertTemplateUsed(response, 'blog/base.html')
         self.assertContains(response, post)
         self.assertContains(response, past_post)
         self.assertNotContains(response, future_post)
@@ -61,7 +71,7 @@ class ViewsTest(TestCase):
         response = self.client.get(reverse('post_detail', kwargs={'pk': post.pk}))
         self.assertEqual(200, response.status_code)
 
-    def test_post_new_view(self):
+    def test_post_new_view(self):  # so only the tests with login are broken
         """Testing new post view before and after login."""
         response = self.client.get(reverse('post_new'))
         self.assertEqual(302, response.status_code)
@@ -72,7 +82,7 @@ class ViewsTest(TestCase):
         self.assertEqual(200, response.status_code)
         self.assertRedirects(response, reverse('post_detail', kwargs={'pk': 1}))
 
-    def test_post_edit(self):
+    def test_post_edit(self):  # and this one
         """Testing edit views before and after user login."""
         response = self.client.get(reverse('post_edit', kwargs={'pk': 1}))
         self.assertEqual(302, response.status_code)
@@ -85,7 +95,7 @@ class ViewsTest(TestCase):
         response = self.client.get(reverse('post_edit', kwargs={'pk': post.pk}))
         self.assertEqual(200, response.status_code)
 
-    def tearDown(self):
+    def tearDown(self):  # this method is run after __each__ test
         """Clean data after each test."""
         del self.client
         del self.user
