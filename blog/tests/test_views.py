@@ -52,16 +52,15 @@ class ViewsTest(TestCase):
         with patch('django.utils.timezone.now', lambda: datetime(day=1, month=4, year=2016, tzinfo=tz)):
             response = self.client.get(reverse('post_list'))
             self.assertListEqual(list(response.context['posts']), [post, past_post])
+            self.assertTemplateUsed(response, 'blog/post_list.html')
+            self.assertContains(response, post)
+            self.assertContains(response, past_post)
             self.assertNotContains(response, future_post)
         with patch('django.utils.timezone.now', lambda: datetime(day=1, month=4, year=3016, tzinfo=tz)):
             response = self.client.get(reverse('post_list'))
             self.assertListEqual(list(response.context['posts']), [future_post, post, past_post])
-        response = self.client.get(reverse('post_list'))
-        self.assertEqual(200, response.status_code)
-        self.assertTemplateUsed(response, 'blog/base.html')
-        self.assertContains(response, post)
-        self.assertContains(response, past_post)
-        self.assertNotContains(response, future_post)
+            response = self.client.get(reverse('post_list'))
+            self.assertEqual(200, response.status_code)
 
     def test_detail_view(self):
         """Testing detail page when post is not exist and when it exists."""
@@ -70,6 +69,7 @@ class ViewsTest(TestCase):
         post = Post.objects.create(author=self.user, title='Test', text='superText')
         response = self.client.get(reverse('post_detail', kwargs={'pk': post.pk}))
         self.assertEqual(200, response.status_code)
+        self.assertContains(response, post)
 
     def test_post_new_view(self):  # so only the tests with login are broken
         """Testing new post view before and after login."""
@@ -80,6 +80,7 @@ class ViewsTest(TestCase):
         response = self.client.post(reverse('post_new'), {'author': self.user, 'title': 'Test', 'text': 'superText', },
                                     follow=True)
         self.assertEqual(200, response.status_code)
+        self.assertContains(response, 'Test')
         self.assertRedirects(response, reverse('post_detail', kwargs={'pk': 1}))
 
     def test_post_edit(self):  # and this one
@@ -93,6 +94,10 @@ class ViewsTest(TestCase):
         self.assertEqual(404, response.status_code)
         post = Post.objects.create(author=self.user, title='Test', text='superText')
         response = self.client.get(reverse('post_edit', kwargs={'pk': post.pk}))
+        self.assertEqual(200, response.status_code)
+        response = self.client.post(reverse('post_edit', kwargs={'pk': 1}), {'author': self.user, 'title': 'Test',
+                                    'text': 'asdasdasd', }, follow=True)
+        self.assertContains(response, 'asdasdasd')
         self.assertEqual(200, response.status_code)
 
     def tearDown(self):  # this method is run after __each__ test
