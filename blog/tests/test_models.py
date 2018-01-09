@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 from django.test import TestCase
 from django.utils import timezone
 
-from blog.models import Post
+from blog.models import Post, Comment
 
 
 class ModelPostTest(TestCase):
@@ -29,7 +29,31 @@ class ModelPostTest(TestCase):
         self.assertEqual(self.test_post.published_date, datetime(day=1, month=4, year=2016,
                                                                  tzinfo=timezone.get_current_timezone()))
 
+
+class ModelCommentTest(TestCase):
+    """Main class for testing Comment models of the project."""
+
+    def setUp(self):
+        """Prepare data for testing."""
+        self.user = User.objects.create(username='testuser')
+        self.test_post = Post.objects.create(author=self.user, title='Test', text='superText')
+        self.comment = Comment.objects.create(post=self.test_post, author=self.user.username, text='superComment',
+                                              is_approved=False)
+
+    def test_comment_rendering(self):
+        """Comment is rendered as its title."""
+        self.assertEqual(str(self.comment), self.comment.text)
+
+    def test_comment_approve(self):
+        """Audit for right work of publish method in comment models."""
+        self.comment.is_approved = False
+        self.comment.approve()
+        self.assertTrue(self.comment.is_approved)
+        self.comment.approve()
+        self.assertTrue(self.comment.is_approved)
+
     def tearDown(self):
         """Clean data for new test."""
         del self.user
         del self.test_post
+        del self.comment

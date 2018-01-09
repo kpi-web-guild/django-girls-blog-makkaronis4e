@@ -8,7 +8,7 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.utils import timezone
 
-from blog.models import Post
+from blog.models import Post, Comment
 
 
 class ViewsTest(TestCase):
@@ -99,6 +99,66 @@ class ViewsTest(TestCase):
                                     'text': 'asdasdasd', }, follow=True)
         self.assertContains(response, 'asdasdasd')
         self.assertEqual(200, response.status_code)
+
+    def test_drafts(self):
+        """Testing drafts view before and after login."""
+        response = self.client.get(reverse('post_draft_list'))
+        self.assertEqual(302, response.status_code)
+        authorization = self.client.login(username=self.USERNAME, password=self.PASSWORD)
+        self.assertTrue(authorization)
+        response = self.client.get(reverse('post_draft_list'))
+        self.assertEqual(200, response.status_code)
+
+    def test_publish_post(self):
+        """Testing publishing post before login and after."""
+        response = self.client.get(reverse('post_publish', kwargs={'pk': 1}))
+        self.assertEqual(302, response.status_code)
+        authorization = self.client.login(username=self.USERNAME, password=self.PASSWORD)
+        self.assertTrue(authorization)
+        response = self.client.get(reverse('post_publish', kwargs={'pk': 1}))
+        self.assertEqual(404, response.status_code)
+        post = Post.objects.create(author=self.user, title='Test', text='superText')
+        response = self.client.get(reverse('post_publish', kwargs={'pk': post.pk}), follow=True)
+        self.assertRedirects(response, reverse('post_detail', kwargs={'pk': post.pk}))
+
+    def test_delete_post(self):
+        """Testing deleting post before and after login."""
+        response = self.client.get(reverse('post_remove', kwargs={'pk': 1}))
+        self.assertEqual(302, response.status_code)
+        authorization = self.client.login(username=self.USERNAME, password=self.PASSWORD)
+        self.assertTrue(authorization)
+        response = self.client.get(reverse('post_remove', kwargs={'pk': 1}))
+        self.assertEqual(404, response.status_code)
+        post = Post.objects.create(author=self.user, title='Test', text='superText')
+        response = self.client.post(reverse('post_remove', kwargs={'pk': post.pk}), follow=True)
+        self.assertRedirects(response, reverse('post_list'))
+
+    def test_add_comment(self):
+        """Add comment to post."""
+        self.post = Post.objects.create(author=self.user, title='Test', text='superText')
+        response = self.client.get(reverse('add_comment_to_post', kwargs={'pk': self.post.pk}))
+        self.assertEqual(200, response.status_code)
+        response = self.client.post(reverse('add_comment_to_post', kwargs={'pk': self.post.pk}),
+                                    {'author': self.user, 'text': 'Super'}, follow=True)
+        self.assertRedirects(response, reverse('post_detail', kwargs={'pk': self.post.pk}))
+
+    def test_comment_aprove(self):
+        """Testing comment approve view."""
+        self.post = Post.objects.create(author=self.user, title='Test', text='superText')
+        self.comment = Comment.objects.create(post=self.post, author=self.user, text='superComment')
+        authorization = self.client.login(username=self.USERNAME, password=self.PASSWORD)
+        self.assertTrue(authorization)
+        response = self.client.get(reverse('comment_approve', kwargs={'pk': self.comment.pk}), follow=True)
+        self.assertRedirects(response, reverse('post_detail', kwargs={'pk': self.post.pk}))
+
+    def test_comment_delete(self):
+        """Testing delete comment view."""
+        self.post = Post.objects.create(author=self.user, title='Test', text='superText')
+        self.comment = Comment.objects.create(post=self.post, author=self.user, text='superComment')
+        authorization = self.client.login(username=self.USERNAME, password=self.PASSWORD)
+        self.assertTrue(authorization)
+        response = self.client.post(reverse('comment_remove', kwargs={'pk': self.comment.pk}), follow=True)
+        self.assertRedirects(response, reverse('post_detail', kwargs={'pk': self.post.pk}))
 
     def tearDown(self):  # this method is run after __each__ test
         """Clean data after each test."""
