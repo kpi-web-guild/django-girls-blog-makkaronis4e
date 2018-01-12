@@ -1,1 +1,1 @@
-"""This package contains tests for project."""
+"""Tests for project."""
