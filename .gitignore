@@ -102,3 +102,6 @@ ENV/
 .mypy_cache/
 db.sqlite3
 local_settings.py
+
+# other
+.vscode/
