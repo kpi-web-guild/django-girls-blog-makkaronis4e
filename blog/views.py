@@ -2,7 +2,7 @@
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from django.core.urlresolvers import reverse_lazy
+from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
 from django.views.generic import DetailView, ListView, UpdateView, View, FormView
 
@@ -31,14 +31,14 @@ class PostList(ListView):
 
 
 class PostDetail(DetailView):
-    """Show info about one post you have chosen."""
+    """Show info about one chosen post."""
 
     model = Post
     template_name = 'blog/post_detail.html'
 
 
 class NewPost(FormView, Protected):
-    """Return page for adding new Post."""
+    """Return page to add a new Post."""
 
     form_class = PostForm
     template_name = 'blog/post_edit.html'
@@ -59,9 +59,12 @@ class NewPost(FormView, Protected):
 
 
 class EditPost(UpdateView, Protected):
-    """View is for editing post."""
+    """Post edit view."""
 
     model = Post
     fields = ['title', 'text']
-    success_url = reverse_lazy('post_list')
     template_name = 'blog/post_edit.html'
+
+    def get_success_url(self):
+        """Return post_detail after save changes in post."""
+        return reverse('post_detail', kwargs={'pk': self.get_object().id})
