@@ -1,53 +1,58 @@
 """Views for blog app."""
-from django.shortcuts import render
-from .models import Post
 from django.utils import timezone
-from django.shortcuts import get_object_or_404
-from .forms import PostForm
-from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+from django.views.generic import (
+    DetailView, ListView,
+    UpdateView, View, CreateView,
+)
+
+from .forms import PostForm
+from .models import Post
 
 
-def post_list(request):
-    """Render page with list of posts."""
-    posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')
-    return render(request, 'blog/post_list.html', {'posts': posts})
+class Protected(View):
+    """Protect views that need to show only for authorised users."""
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        """Rewrite standart method and it to decorator."""
+        return super().dispatch(*args, **kwargs)
 
 
-def post_detail(request, pk):
-    """Render detailed post."""
-    post = get_object_or_404(Post, pk=pk)
-    return render(request, 'blog/post_detail.html', {'post': post})
+class PostList(ListView):
+    """Show all your Post objects."""
+
+    context_object_name = 'posts'
+    template_name = 'blog/index.html'
+
+    def get_queryset(self):
+        """Return needed posts."""
+        return Post.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')
 
 
-@login_required
-def post_new(request):
-    """Render new post in blog."""
-    if request.method == 'POST':
-        form = PostForm(request.POST)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.author = request.user
-            post.published_date = timezone.now()
-            post.save()
-            return redirect('post_detail', pk=post.pk)
-    else:
-        form = PostForm()
-    return render(request, 'blog/post_edit.html', {'form': form})
+class PostDetail(DetailView):
+    """Show info about one chosen post."""
+
+    model = Post
+    template_name = 'blog/post_detail.html'
 
 
-@login_required
-def post_edit(request, pk):
-    """Render editing of new post in blog."""
-    post = get_object_or_404(Post, pk=pk)
-    if request.method == 'POST':
-        form = PostForm(request.POST, instance=post)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.author = request.user
-            post.published_date = timezone.now()
-            post.save()
-            return redirect('post_detail', pk=post.pk)
-    else:
-        form = PostForm(instance=post)
-    return render(request, 'blog/post_edit.html', {'form': form})
+class NewPost(CreateView, Protected):
+    """Return page to add a new Post."""
+
+    form_class = PostForm
+    template_name = 'blog/post_edit.html'
+
+    def form_valid(self, form):
+        """Add info to form that were not given from POST request."""
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+
+class EditPost(UpdateView, Protected):
+    """Post edit view."""
+
+    model = Post
+    fields = ['title', 'text']
+    template_name = 'blog/post_edit.html'
