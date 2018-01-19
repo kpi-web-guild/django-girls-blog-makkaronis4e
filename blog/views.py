@@ -46,10 +46,6 @@ class NewPost(CreateView, Protected):
     form_class = PostForm
     template_name = 'blog/post_edit.html'
 
-    def get_success_url(self):
-        """Return post_detail after save changes in post."""
-        return reverse('post_detail', kwargs={'pk': self.object.id})
-
     def form_valid(self, form):
         """Add info to form that were not given from POST request."""
         form.instance.author = self.request.user
@@ -62,7 +58,3 @@ class EditPost(UpdateView, Protected):
     model = Post
     fields = ['title', 'text']
     template_name = 'blog/post_edit.html'
-
-    def get_success_url(self):
-        """Return post_detail after save changes in post."""
-        return reverse('post_detail', kwargs={'pk': self.get_object().id})
