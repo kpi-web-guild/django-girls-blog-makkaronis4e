@@ -4,7 +4,10 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
-from django.views.generic import DetailView, ListView, UpdateView, View, FormView
+from django.views.generic import (
+    DetailView, ListView,
+    UpdateView, View, CreateView,
+)
 
 from .forms import PostForm
 from .models import Post
@@ -37,25 +40,20 @@ class PostDetail(DetailView):
     template_name = 'blog/post_detail.html'
 
 
-class NewPost(FormView, Protected):
+class NewPost(CreateView, Protected):
     """Return page to add a new Post."""
 
     form_class = PostForm
     template_name = 'blog/post_edit.html'
 
+    def get_success_url(self):
+        """Return post_detail after save changes in post."""
+        return reverse('post_detail', kwargs={'pk': self.object.id})
+
     def form_valid(self, form):
         """Add info to form that were not given from POST request."""
         form.instance.author = self.request.user
         return super().form_valid(form)
-
-    def post(self, request, *args, **kwargs):
-        """Get info from form and save it as 'post' object."""
-        form = PostForm(request.POST)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.author = request.user
-            post.save()
-            return redirect('post_detail', pk=post.pk)
 
 
 class EditPost(UpdateView, Protected):
