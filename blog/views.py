@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.shortcuts import get_object_or_404, redirect
 from django.core.urlresolvers import reverse_lazy
-from django.views.generic import DetailView, ListView, UpdateView, View, DeleteView, TemplateView, FormView
+from django.views.generic import DetailView, ListView, UpdateView, View, DeleteView, TemplateView, CreateView
 
 from .forms import CommentForm, PostForm
 from .models import Post, Comment
@@ -37,7 +37,7 @@ class PostDetail(DetailView):
     template_name = 'blog/post_detail.html'
 
 
-class NewPost(FormView, Protected):
+class NewPost(CreateView, Protected):
     """Return page to add a new Post."""
 
     form_class = PostForm
@@ -83,7 +83,7 @@ class RemovePost(Protected, DeleteView):
     template_name = 'blog/post_edit.html'
 
 
-class AddCommentToPost(FormView):
+class AddCommentToPost(CreateView):
     """If someone wants to create new comment he/she get this view."""
 
     form_class = CommentForm

@@ -52,8 +52,9 @@ class ModelCommentTest(TestCase):
         self.comment.approve()
         self.assertTrue(self.comment.is_approved)
 
-    def tearDown(self):
-        """Clean data for new test."""
-        del self.user
-        del self.test_post
-        del self.comment
+
+def tearDown(self):
+    """Clean data for new test."""
+    del self.user
+    del self.test_post
+    del self.comment
