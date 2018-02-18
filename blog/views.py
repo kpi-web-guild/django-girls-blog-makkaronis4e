@@ -2,13 +2,15 @@
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django.shortcuts import get_object_or_404, redirect
+from django.core.urlresolvers import reverse_lazy
 from django.views.generic import (
-    DetailView, ListView,
-    UpdateView, View, CreateView,
+    DetailView, ListView, UpdateView,
+    View, DeleteView, TemplateView, CreateView,
 )
 
-from .forms import PostForm
-from .models import Post
+from .forms import CommentForm, PostForm
+from .models import Post, Comment
 
 
 class Protected(View):
@@ -56,3 +58,71 @@ class EditPost(UpdateView, Protected):
     model = Post
     fields = ['title', 'text']
     template_name = 'blog/post_edit.html'
+
+
+class PostDraftList(ListView, Protected):
+    """Return draft list."""
+
+    queryset = Post.objects.filter(published_date__isnull=True).order_by('created_date')
+    context_object_name = 'posts'
+    template_name = 'blog/post_draft_list.html'
+
+
+class PublishPost(TemplateView, Protected):
+    """View for publishing post."""
+
+    def get(self, request, *args, **kwargs):
+        """Get info about POst pk that we use."""
+        post = get_object_or_404(Post, pk=kwargs['pk'])
+        post.publish()
+        return redirect('post_detail', pk=post.pk)
+
+
+class RemovePost(Protected, DeleteView):
+    """View for deleting posts."""
+
+    model = Post
+    success_url = reverse_lazy('post_list')
+    template_name = 'blog/post_edit.html'
+
+
+class AddCommentToPost(CreateView):
+    """If someone wants to create new comment he/she get this view."""
+
+    form_class = CommentForm
+    template_name = 'blog/post_edit.html'
+
+    def get_success_url(self):
+        """Return requested url."""
+        return self.object.post.get_absolute_url()
+
+    def form_valid(self, form):
+        """Check if form is valid."""
+        form.instance.post = get_object_or_404(Post, pk=self.kwargs['pk'])
+        return super().form_valid(form)
+
+
+class ApproveComment(Protected, TemplateView):
+    """Moderate comment."""
+
+    def post(self, request, *args, **kwargs):
+        """Approve comment and update info in DB."""
+        comment = get_object_or_404(Comment, pk=kwargs['pk'])
+        comment.approve()
+        return redirect('post_detail', pk=comment.post.pk)
+
+
+class RemoveComment(Protected, DeleteView):
+    """Remove comment."""
+
+    model = Comment
+    template_name = 'blog/post_edit.html'
+
+    def get_success_url(self):
+        """Return requested url."""
+        return self.object.post.get_absolute_url()
+
+    def form_valid(self, form):
+        """Check if form is valid."""
+        form.instance.post = get_object_or_404(Post, pk=self.kwargs['pk'])
+        return super().form_valid(form)
