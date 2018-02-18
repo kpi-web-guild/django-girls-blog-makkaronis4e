@@ -148,7 +148,7 @@ class ViewsTest(TestCase):
         self.comment = Comment.objects.create(post=self.post, author=self.user, text='superComment')
         authorization = self.client.login(username=self.USERNAME, password=self.PASSWORD)
         self.assertTrue(authorization)
-        response = self.client.get(reverse('comment_approve', kwargs={'pk': self.comment.pk}), follow=True)
+        response = self.client.post(reverse('comment_approve', kwargs={'pk': self.comment.pk}), follow=True)
         self.assertRedirects(response, reverse('post_detail', kwargs={'pk': self.post.pk}))
 
     def test_comment_delete(self):

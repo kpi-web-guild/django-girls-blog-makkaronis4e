@@ -4,7 +4,10 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.shortcuts import get_object_or_404, redirect
 from django.core.urlresolvers import reverse_lazy
-from django.views.generic import DetailView, ListView, UpdateView, View, DeleteView, TemplateView, CreateView
+from django.views.generic import (
+    DetailView, ListView, UpdateView,
+    View, DeleteView, TemplateView, CreateView,
+)
 
 from .forms import CommentForm, PostForm
 from .models import Post, Comment
@@ -65,7 +68,7 @@ class PostDraftList(ListView, Protected):
     template_name = 'blog/post_draft_list.html'
 
 
-class PublishPost(Protected, TemplateView):
+class PublishPost(TemplateView, Protected):
     """View for publishing post."""
 
     def get(self, request, *args, **kwargs):
@@ -89,21 +92,20 @@ class AddCommentToPost(CreateView):
     form_class = CommentForm
     template_name = 'blog/post_edit.html'
 
-    def post(self, request, *args, **kwargs):
-        """Add comment to DB."""
-        post = get_object_or_404(Post, pk=kwargs['pk'])
-        form = CommentForm(request.POST)
-        if form.is_valid():
-            comment = form.save(commit=False)
-            comment.post = post
-            comment.save()
-            return redirect('post_detail', pk=post.pk)
+    def get_success_url(self):
+        """Return requested url."""
+        return self.object.post.get_absolute_url()
+
+    def form_valid(self, form):
+        """Check if form is valid."""
+        form.instance.post = get_object_or_404(Post, pk=self.kwargs['pk'])
+        return super().form_valid(form)
 
 
 class ApproveComment(Protected, TemplateView):
     """Moderate comment."""
 
-    def get(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         """Approve comment and update info in DB."""
         comment = get_object_or_404(Comment, pk=kwargs['pk'])
         comment.approve()
@@ -116,9 +118,11 @@ class RemoveComment(Protected, DeleteView):
     model = Comment
     template_name = 'blog/post_edit.html'
 
-    def post(self, request, *args, **kwargs):
-        """Rewritten standart method."""
-        comment = get_object_or_404(Comment, pk=kwargs['pk'])
-        post_pk = comment.post.pk
-        comment.delete()
-        return redirect('post_detail', pk=post_pk)
+    def get_success_url(self):
+        """Return requested url."""
+        return self.object.post.get_absolute_url()
+
+    def form_valid(self, form):
+        """Check if form is valid."""
+        form.instance.post = get_object_or_404(Post, pk=self.kwargs['pk'])
+        return super().form_valid(form)
